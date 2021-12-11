@@ -1,14 +1,14 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.view;
+
+import ru.vsu.kudinov_i_m.view.MainPanel;
 
 import javax.swing.*;
 
 public class FrameMain extends JFrame{
 
     public FrameMain() {
-        setTitle("Function");
-        ImageIcon icon = new ImageIcon("src\\ru\\vsu\\fedosova_p_o\\resources\\appIcon.png");
-        setIconImage(icon.getImage());
-        setSize(1500, 1500);
+        setTitle("Affine transform");
+        setSize(1500, 1000);
         add(new MainPanel());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

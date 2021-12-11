@@ -1,10 +1,13 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.drawingObject;
 
+import ru.vsu.kudinov_i_m.screen.ScreenConverter;
+import ru.vsu.kudinov_i_m.screen.ScreenPoint;
+import ru.vsu.kudinov_i_m.math.Vector2;
 import ru.vsu.kudinov_i_m.util.DrawUtils;
 
 import java.awt.*;
 
-public class Text implements Drawing {
+public class Text implements DrawingObject {
     private final String text;
     private final Vector2 realCoordinates;
     private final Font font;

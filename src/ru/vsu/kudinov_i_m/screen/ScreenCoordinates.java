@@ -1,4 +1,4 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.screen;
 
 import java.util.List;
 

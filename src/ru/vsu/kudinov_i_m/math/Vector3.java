@@ -1,4 +1,4 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.math;
 
 public class Vector3 {
 
@@ -50,6 +50,13 @@ public class Vector3 {
         return new Vector3(array);
     }
 
+    public Vector3 plus(Vector3 otherVector) {
+        float[] result = new float[3];
+        for (int i = 0; i < 3; i++) {
+            result[i] = this.at(i) + otherVector.at(i);
+        }
+        return new Vector3(result);
+    }
 
     public float at(int idx) {
         return values[idx];

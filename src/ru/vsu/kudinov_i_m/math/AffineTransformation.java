@@ -1,4 +1,4 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.math;
 
 public class AffineTransformation implements IAffine{
 
@@ -21,6 +21,14 @@ public class AffineTransformation implements IAffine{
                         )
                 )
         ).asVector2();
+    }
+
+    public boolean isXProjection() {
+        return projection.getAt(1, 1) == -1;
+    }
+
+    public boolean isYProjection() {
+        return projection.getAt(0, 0) == -1;
     }
 
     public Matrix3 getTranslation() {

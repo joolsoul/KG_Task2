@@ -1,12 +1,14 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.screen;
+
+import ru.vsu.kudinov_i_m.math.Vector2;
 
 public class ScreenConverter
 {
-    private double realWidth, realHeight;
+    private float realWidth, realHeight;
     private int screenWidth, screenHeight;
-    private double angularRealX, angularRealY;
+    private float angularRealX, angularRealY;
 
-    public ScreenConverter(double realWidth, double realHeight, double angularRealX, double angularRealY, int screenWidth, int screenHeight)
+    public ScreenConverter(float realWidth, float realHeight, float angularRealX, float angularRealY, int screenWidth, int screenHeight)
     {
         this.realWidth = realWidth;
         this.realHeight = realHeight;
@@ -18,15 +20,15 @@ public class ScreenConverter
 
     public ScreenPoint realToScreen(Vector2 realPoint)
     {
-        double screenX = (realPoint.getRealX() - angularRealX) / realWidth * screenWidth;
-        double screenY = (angularRealY - realPoint.getRealY()) / realHeight * screenHeight;
+        float screenX = (realPoint.getRealX() - angularRealX) / realWidth * screenWidth;
+        float screenY = (angularRealY - realPoint.getRealY()) / realHeight * screenHeight;
 
         return new ScreenPoint((int) screenX, (int) screenY);
     }
 
     public Vector2 screenToReal(ScreenPoint screenPoint) {
-        float x = (float) (angularRealX + screenPoint.getScreenX() * realWidth / screenWidth);
-        float y = (float) (angularRealY - screenPoint.getScreenY() * realHeight / screenHeight);
+        float x = (angularRealX + screenPoint.getScreenX() * realWidth / screenWidth);
+        float y = (angularRealY - screenPoint.getScreenY() * realHeight / screenHeight);
         return new Vector2(x, y);
     }
 
@@ -45,22 +47,22 @@ public class ScreenConverter
     }
 
 
-    public double getRealWidth()
+    public float getRealWidth()
     {
         return realWidth;
     }
 
-    public void setRealWidth(double realWidth)
+    public void setRealWidth(float realWidth)
     {
         this.realWidth = realWidth;
     }
 
-    public double getRealHeight()
+    public float getRealHeight()
     {
         return realHeight;
     }
 
-    public void setRealHeight(double realHeight)
+    public void setRealHeight(float realHeight)
     {
         this.realHeight = realHeight;
     }
@@ -85,22 +87,22 @@ public class ScreenConverter
         this.screenHeight = screenHeight;
     }
 
-    public double getAngularRealX()
+    public float getAngularRealX()
     {
         return angularRealX;
     }
 
-    public void setAngularRealX(double angularRealX)
+    public void setAngularRealX(float angularRealX)
     {
         this.angularRealX = angularRealX;
     }
 
-    public double getAngularRealY()
+    public float getAngularRealY()
     {
         return angularRealY;
     }
 
-    public void setAngularRealY(double angularRealY)
+    public void setAngularRealY(float angularRealY)
     {
         this.angularRealY = angularRealY;
     }

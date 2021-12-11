@@ -1,20 +1,26 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.graphics;
+
+import ru.vsu.kudinov_i_m.screen.ScreenConverter;
+import ru.vsu.kudinov_i_m.screen.ScreenCoordinates;
+import ru.vsu.kudinov_i_m.screen.ScreenPoint;
+import ru.vsu.kudinov_i_m.math.Vector2;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SimpleDrawer implements IDrawer{
+public class SimpleDrawer implements IDrawer {
 
-    private Graphics graphics;
+    private Graphics2D graphics;
     private ScreenConverter screenConverter;
 
-    public SimpleDrawer(Graphics graphics, ScreenConverter screenConverter) {
+    public SimpleDrawer(Graphics2D graphics, ScreenConverter screenConverter) {
         this.graphics = graphics;
         this.screenConverter = screenConverter;
     }
 
-    public Graphics getGraphics() {
+    @Override
+    public Graphics2D getGraphics() {
         return graphics;
     }
 

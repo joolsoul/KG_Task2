@@ -1,4 +1,4 @@
-package ru.vsu.kudinov_i_m;
+package ru.vsu.kudinov_i_m.math;
 
 public class MatrixFactories {
 
@@ -24,12 +24,12 @@ public class MatrixFactories {
 
     public static Matrix3 translation(float deltaX, float deltaY) {
         Matrix3 matrix = createOneMatrix();
-        matrix.setAt(0, 2, deltaX);
-        matrix.setAt(1, 2, deltaY);
+        matrix.setAt(2, 0, deltaX);
+        matrix.setAt(2, 1, deltaY);
         return matrix;
     }
 
-    public static Matrix3 translation(Vector3 v) {
+    public static Matrix3 translation(Vector2 v) {
         return translation(v.getRealX(), v.getRealY());
     }
 
@@ -49,9 +49,9 @@ public class MatrixFactories {
         if (axisIndex < 0 || axisIndex > 2)
             return matrix;
         if(axisIndex == 0) {
-            matrix.setAt(0, 0, -1);
-        } else {
             matrix.setAt(1, 1, -1);
+        } else {
+            matrix.setAt(0, 0, -1);
         }
         return matrix;
     }
