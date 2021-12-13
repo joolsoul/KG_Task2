@@ -14,6 +14,8 @@ import ru.vsu.kudinov_i_m.util.DrawUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class MainPanel extends JPanel implements AffineController.RepaintRequiredListener {
@@ -22,13 +24,15 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
     private AffineTransformation affineTransformation;
     private AffineController affineController;
     private World world;
+    private MotionsPanel motionsPanel;
 
     private Line xAxis;
     private Line yAxis;
     private Font defaultFont = new Font("TimesRoman", Font.PLAIN, 18);
+    private final Color background = new Color(0xD4F6FF);
 
     public MainPanel() {
-        world = new World(new Color(0xD4F6FF));
+        world = new World(background);
         affineTransformation = new AffineTransformation();
         affineController = new AffineController(affineTransformation, screenConverter, world);
         affineController.setListener(this);
@@ -41,6 +45,7 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
         this.addMouseWheelListener(affineController);
 
         world.getModels().add(new Rhombus(new Vector2(-0.7f, 0), new Vector2(0, -0.5f), new Color(0x030326), new BasicStroke(3)));
+        setLayout(null);
     }
 
     @Override
@@ -68,6 +73,65 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
     @Override
     public void shouldRepaint() {
         repaint();
+    }
+
+    @Override
+    public void addPanel(int x, int y) {
+        motionsPanel = new MotionsPanel();
+        motionsPanel.setSize(this.getWidth() / 8, this.getHeight() / 8);
+        motionsPanel.setLocation(x, y);
+        add(motionsPanel);
+        removeMouseListener(affineController);
+        removeMouseMotionListener(affineController);
+        removeMouseWheelListener(affineController);
+    }
+
+    private static class MotionsPanel extends JPanel {
+
+        private final JLabel rotationLabel = new JLabel("Rotation on:");
+        private final JTextField alphaField = new JFormattedTextField();
+        private final JButton projectionYButton = new JButton("Projection by Y Axis");
+        private final JButton projectionXButton = new JButton("Projection by X Axis");
+        private final JButton rotationButton = new JButton("Rotation");
+
+        public MotionsPanel() {
+            setBackground(new Color(0xA1FABE));
+            setLayout(null);
+            addButtons();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int height = (this.getHeight() / 4) - 5;
+            int width = this.getWidth() / 5;
+            rotationLabel.setBounds(width, 0, this.getWidth(), height);
+            alphaField.setBounds(this.getWidth() - width * 2, 0, width, height);
+            rotationButton.setBounds(0, this.getHeight() - height * 3 - 10, this.getWidth(), height);
+            projectionXButton.setBounds(0, this.getHeight() - height * 2 - 5, this.getWidth(), height);
+            projectionYButton.setBounds(0, this.getHeight() - height, this.getWidth(), height);
+        }
+
+        private void addListeners() {
+            projectionXButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+        }
+        private void addButtons() {
+            add(rotationLabel);
+            add(alphaField);
+            add(projectionXButton);
+            add(projectionYButton);
+            add(rotationButton);
+        }
+    }
+
+    @Override
+    public void clearPanel() {
+        motionsPanel.setVisible(false);
     }
 
     private void resizeAxes() {
@@ -98,16 +162,14 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
                 firstLinePointY = -0.05f;
                 secondLinePointY = 0.05f;
 
-            }
-            else {
+            } else {
                 firstLinePointY = screenConverter.getAngularRealY() - screenConverter.getRealHeight();
                 secondLinePointY = firstLinePointY + 0.2f;
 
             }
             textXShift = 0.04f;
             textYShift = 0.06f;
-        }
-        else { // если мы просматриваем ниже Ох
+        } else { // если мы просматриваем ниже Ох
             firstLinePointY = screenConverter.getAngularRealY();
             secondLinePointY = firstLinePointY - 0.2f;
 
@@ -136,15 +198,13 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
             if (screenConverter.getAngularRealX() > -screenConverter.getRealWidth()) { // если ось в поле зрения
                 firstLinePointX = -0.05f;
                 secondLinePointX = 0.05f;
-            }
-            else { // если ось в поле зрения
+            } else { // если ось в поле зрения
                 firstLinePointX = screenConverter.getAngularRealX() + screenConverter.getRealWidth();
                 secondLinePointX = screenConverter.getAngularRealX() + screenConverter.getRealWidth() - 0.1f;
             }
             textXShift = -0.06f;
             textYShift = 0.01f;
-        }
-        else { // если мы просматриваем правее Оу
+        } else { // если мы просматриваем правее Оу
             firstLinePointX = screenConverter.getAngularRealX();
             secondLinePointX = screenConverter.getAngularRealX() + 0.1f;
 
@@ -154,7 +214,7 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
 
         for (int i = downRealBound; i <= upRealBound; i++) {
             new Line(new Vector2(firstLinePointX, i), new Vector2(secondLinePointX, i)).draw(graphics2D, screenConverter);
-            if(i != 0)
+            if (i != 0)
                 new Text(Integer.toString(i), this.defaultFont, new Vector2(firstLinePointX + textXShift, i + textYShift)).draw(graphics2D, screenConverter);
         }
     }
