@@ -14,8 +14,6 @@ import ru.vsu.kudinov_i_m.util.DrawUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class MainPanel extends JPanel implements AffineController.RepaintRequiredListener {
@@ -24,7 +22,6 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
     private AffineTransformation affineTransformation;
     private AffineController affineController;
     private World world;
-    private MotionsPanel motionsPanel;
 
     private Line xAxis;
     private Line yAxis;
@@ -44,7 +41,7 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
         this.addMouseMotionListener(affineController);
         this.addMouseWheelListener(affineController);
 
-        world.getModels().add(new Rhombus(new Vector2(-0.7f, 0), new Vector2(0, -0.5f), new Color(0x030326), new BasicStroke(3)));
+        world.getModels().add(new Rhombus(new Vector2(-0.7f, 0), new Vector2(0, -0.5f), new Color(0x141496), new BasicStroke(3)));
         setLayout(null);
     }
 
@@ -59,8 +56,9 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
         IDrawer drawer = new SimpleDrawer(gr, screenConverter);
 
         world.draw(affineTransformation, drawer);
-        DrawUtils.drawWithColor(gr, Color.BLUE, () -> {
-            resizeAxes();
+
+        DrawUtils.drawWithColor(gr, Color.BLACK, () -> {
+            recalculateAxesScale();
             xAxis.draw(gr, screenConverter);
             yAxis.draw(gr, screenConverter);
             drawNumbers(gr);
@@ -75,66 +73,8 @@ public class MainPanel extends JPanel implements AffineController.RepaintRequire
         repaint();
     }
 
-    @Override
-    public void addPanel(int x, int y) {
-        motionsPanel = new MotionsPanel();
-        motionsPanel.setSize(this.getWidth() / 8, this.getHeight() / 8);
-        motionsPanel.setLocation(x, y);
-        add(motionsPanel);
-        removeMouseListener(affineController);
-        removeMouseMotionListener(affineController);
-        removeMouseWheelListener(affineController);
-    }
 
-    private static class MotionsPanel extends JPanel {
-
-        private final JLabel rotationLabel = new JLabel("Rotation on:");
-        private final JTextField alphaField = new JFormattedTextField();
-        private final JButton projectionYButton = new JButton("Projection by Y Axis");
-        private final JButton projectionXButton = new JButton("Projection by X Axis");
-        private final JButton rotationButton = new JButton("Rotation");
-
-        public MotionsPanel() {
-            setBackground(new Color(0xA1FABE));
-            setLayout(null);
-            addButtons();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            int height = (this.getHeight() / 4) - 5;
-            int width = this.getWidth() / 5;
-            rotationLabel.setBounds(width, 0, this.getWidth(), height);
-            alphaField.setBounds(this.getWidth() - width * 2, 0, width, height);
-            rotationButton.setBounds(0, this.getHeight() - height * 3 - 10, this.getWidth(), height);
-            projectionXButton.setBounds(0, this.getHeight() - height * 2 - 5, this.getWidth(), height);
-            projectionYButton.setBounds(0, this.getHeight() - height, this.getWidth(), height);
-        }
-
-        private void addListeners() {
-            projectionXButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                }
-            });
-        }
-        private void addButtons() {
-            add(rotationLabel);
-            add(alphaField);
-            add(projectionXButton);
-            add(projectionYButton);
-            add(rotationButton);
-        }
-    }
-
-    @Override
-    public void clearPanel() {
-        motionsPanel.setVisible(false);
-    }
-
-    private void resizeAxes() {
+    private void recalculateAxesScale() {
         xAxis.setPoint1(new Vector2(screenConverter.getAngularRealX(), 0));
         xAxis.setPoint2(new Vector2(screenConverter.getAngularRealX() + screenConverter.getRealWidth(), 0));
 

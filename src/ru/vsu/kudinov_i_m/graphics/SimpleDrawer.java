@@ -31,12 +31,11 @@ public class SimpleDrawer implements IDrawer {
     @Override
     public void draw(List<Vector2> points) {
         List<ScreenPoint> screenPoints = new LinkedList<>();
-        getGraphics().setColor(Color.black);
         for (Vector2 vector2 : points) {
             screenPoints.add(getScreenConverter().realToScreen(vector2));
         }
         if(screenPoints.size() == 1) {
-            getGraphics().fillRect(screenPoints.get(0).getScreenX(), screenPoints.get(0).getScreenY(), 1, 1);
+            getGraphics().fillOval(screenPoints.get(0).getScreenX(), screenPoints.get(0).getScreenY(), 1, 1);
         } else if(screenPoints.size() == 2){
             getGraphics().drawLine(screenPoints.get(0).getScreenX(), screenPoints.get(0).getScreenY(), screenPoints.get(1).getScreenX(), screenPoints.get(1).getScreenY());
         } else if(screenPoints.size() > 2) {

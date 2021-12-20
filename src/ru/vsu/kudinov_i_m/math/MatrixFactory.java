@@ -1,6 +1,6 @@
 package ru.vsu.kudinov_i_m.math;
 
-public class MatrixFactories {
+public class MatrixFactory {
 
     public enum Axis {X, Y};
 
@@ -56,10 +56,7 @@ public class MatrixFactories {
         return matrix;
     }
 
-
     public static Matrix3 centralProjection(Axis axis) {
         return centralProjection(axis == Axis.X ? 0 : 1);
     }
-
-
 }

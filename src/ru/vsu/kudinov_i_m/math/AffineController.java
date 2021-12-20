@@ -13,8 +13,6 @@ public class AffineController implements MouseListener, MouseMotionListener, Mou
 
     public interface RepaintRequiredListener {
         void shouldRepaint();
-        void addPanel(int x, int y);
-        void clearPanel();
     }
 
     private RepaintRequiredListener listener = null;
@@ -35,19 +33,19 @@ public class AffineController implements MouseListener, MouseMotionListener, Mou
 
         //addPanel(e.getX(), e.getY());
         if (SwingUtilities.isLeftMouseButton(e)) {
-            affineTransformation.modifyRotation(MatrixFactories.rotation(Math.PI / 18));
+            affineTransformation.modifyRotation(MatrixFactory.rotation(Math.PI / 18));
             onRepaint();
         }
         if (SwingUtilities.isRightMouseButton(e)) {
-            affineTransformation.modifyRotation(MatrixFactories.rotation(-Math.PI / 18));
+            affineTransformation.modifyRotation(MatrixFactory.rotation(-Math.PI / 18));
             onRepaint();
         }
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
             if (e.isShiftDown()) {
-                affineTransformation.modifyProjection(MatrixFactories.centralProjection(MatrixFactories.Axis.X));
+                affineTransformation.modifyProjection(MatrixFactory.centralProjection(MatrixFactory.Axis.X));
             } else {
-                affineTransformation.modifyProjection(MatrixFactories.centralProjection(MatrixFactories.Axis.Y));
+                affineTransformation.modifyProjection(MatrixFactory.centralProjection(MatrixFactory.Axis.Y));
             }
 
         }
@@ -109,7 +107,7 @@ public class AffineController implements MouseListener, MouseMotionListener, Mou
                     delta = p1.minus(p2);
                 }
 
-                affineTransformation.modifyTranslation(MatrixFactories.translation(delta));
+                affineTransformation.modifyTranslation(MatrixFactory.translation(delta));
                 lastPoint = currentPoint;
             }
         }
@@ -159,7 +157,7 @@ public class AffineController implements MouseListener, MouseMotionListener, Mou
             int counter = delta < 0 ? -delta : delta;
             while (counter-- > 0)
                 factor *= scale;
-            affineTransformation.modifyScale(MatrixFactories.scale(factor));
+            affineTransformation.modifyScale(MatrixFactory.scale(factor));
             onRepaint();
         }
 
@@ -172,12 +170,6 @@ public class AffineController implements MouseListener, MouseMotionListener, Mou
     protected void onRepaint() {
         if (listener != null) {
             listener.shouldRepaint();
-        }
-    }
-
-    protected void addPanel(int x, int y) {
-        if (listener != null) {
-            listener.addPanel(x, y);
         }
     }
 }
